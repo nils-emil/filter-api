@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/sql/00001-init.sql
+  - include:
+      file: db/changelog/sql/00002-filters-create_time.sql

@@ -15,12 +15,43 @@ repositories {
 	mavenCentral()
 }
 
+
+sourceSets {
+	integrationTest {
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.liquibase:liquibase-core'
+	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	integrationTestImplementation 'com.h2database:h2:2.1.214'
+	annotationProcessor 'org.projectlombok:lombok'
+}
+
+
+configurations {
+	integrationTestImplementation.extendsFrom testImplementation
+	integrationTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+task integrationTest(type: Test) {
+	description = 'Runs integration tests.'
+	group = 'verification'
+	testClassesDirs = sourceSets.integrationTest.output.classesDirs
+	classpath = sourceSets.integrationTest.runtimeClasspath
+	shouldRunAfter test
+}
+
+check.dependsOn integrationTest
+
+integrationTest {
+	useJUnitPlatform()
 }
 
 tasks.named('test') {
