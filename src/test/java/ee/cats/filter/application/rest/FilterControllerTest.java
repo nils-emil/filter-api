@@ -65,8 +65,12 @@ class FilterControllerTest {
     @Test
     public void getAllFilters_callsRequiredServices() {
         List<Filter> filters = new ArrayList<>();
-        filters.add(new Filter());
-        filters.add(new Filter());
+        Filter filter1 = new Filter();
+        filter1.setName("name1");
+        Filter filter2 = new Filter();
+        filter2.setName("name2");
+        filters.add(filter1);
+        filters.add(filter2);
         when(filterService.getAll()).thenReturn(filters);
         when(filterMapper.toDto(any())).thenAnswer(invocation -> {
             Filter filter = invocation.getArgument(0);

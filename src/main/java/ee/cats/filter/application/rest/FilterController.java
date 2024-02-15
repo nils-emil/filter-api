@@ -8,6 +8,7 @@ import ee.cats.filter.domain.FilterService;
 import ee.cats.filter.infrastucture.persistance.filter.Filter;
 import ee.cats.filter.infrastucture.persistance.filtercriteria.FilterCriteria;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ public class FilterController {
     private final FilterMapper filterMapper;
     private final FilterCriteriaMapper filterCriteriaMapper;
 
+    @CrossOrigin
     @PostMapping("/filter")
     public FilterDto createFilter(@RequestBody FilterDto filter) {
         List<FilterCriteria> criteria = filter.getCriteria().stream().map(filterCriteriaMapper::toEntity).collect(Collectors.toList());
@@ -32,6 +34,7 @@ public class FilterController {
         return filterMapper.toDto(createdFilter);
     }
 
+    @CrossOrigin
     @GetMapping("/filters")
     public List<FilterDto> getAllFilters() {
         return filterService.getAll().stream().map(filterMapper::toDto).collect(Collectors.toList());
